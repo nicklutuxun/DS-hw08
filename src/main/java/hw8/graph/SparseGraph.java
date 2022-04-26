@@ -3,10 +3,8 @@ package hw8.graph;
 import exceptions.InsertionException;
 import exceptions.PositionException;
 import exceptions.RemovalException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 
 /**
  * An implementation of Graph ADT using incidence lists
@@ -18,7 +16,10 @@ import java.util.Map;
 public class SparseGraph<V, E> implements Graph<V, E> {
 
   // TODO You may need to add fields/constructor here!
-  HashMap<Vertex<V>, HashSet<Edge<E>>> incidentList = new HashMap<>();
+  HashMap<Vertex<V>, HashSet<Edge<E>>> incoming = new HashMap<>();
+  HashMap<Vertex<V>, HashSet<Edge<E>>> outgoing = new HashMap<>();
+  HashSet<Vertex<V>> allVertices = new HashSet<>();
+  HashSet<Edge<E>> allEdges = new HashSet<>();
 
   // Converts the vertex back to a VertexNode to use internally
   private VertexNode<V> convert(Vertex<V> v) throws PositionException {
@@ -50,15 +51,20 @@ public class SparseGraph<V, E> implements Graph<V, E> {
   public Vertex<V> insert(V v) throws InsertionException {
     // TODO Implement me!
     VertexNode<V> newVertexNode = new VertexNode(v);
-    newVertexNode.owner = this;
-    if (incidentList.containsKey(newVertexNode)) {
+    
+    if (hasDuplicateVertex(v)) {
       throw new InsertionException();
     }
-    HashSet<Edge<E>> incidentEdges = new HashSet<>();
-    incidentList.put(newVertexNode, incidentEdges);
+  
+    newVertexNode.owner = this;
+    HashSet<Edge<E>> incomingEdges = new HashSet<>();
+    HashSet<Edge<E>> outgoingEdges = new HashSet<>();
+    incoming.put(newVertexNode, incomingEdges);
+    outgoing.put(newVertexNode, outgoingEdges);
+    allVertices.add(newVertexNode);
     return newVertexNode;
   }
-
+  
   @Override
   public Edge<E> insert(Vertex<V> from, Vertex<V> to, E e)
       throws PositionException, InsertionException {
@@ -66,22 +72,61 @@ public class SparseGraph<V, E> implements Graph<V, E> {
     if (from == null || to == null) {
       throw new PositionException();
     }
+  
+    // check self-loop
+    if (from == to) {
+      throw new InsertionException();
+    }
+    
     VertexNode<V> gvFrom = convert(from);
     VertexNode<V> gvTo = convert(to);
+    
+    if (hasDuplicateEdge(gvFrom, gvTo)) {
+      throw new InsertionException();
+    }
+    
     EdgeNode<E> newEdgeNode = new EdgeNode(gvFrom, gvTo, e);
-    incidentList.get(gvFrom).add(newEdgeNode);
+    newEdgeNode.owner = this;
+    outgoing.get(gvFrom).add(newEdgeNode);
+    incoming.get(gvTo).add(newEdgeNode);
+    allEdges.add(newEdgeNode);
     return newEdgeNode;
   }
-
+  
+  private boolean hasDuplicateVertex(V v) {
+    for (Vertex<V> vertex : allVertices) {
+      VertexNode<V> gv = convert(vertex);
+      if (gv.data == v) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  private boolean hasDuplicateEdge(VertexNode<V> gvFrom, VertexNode<V> gvTo) {
+    for (Edge<E> e : outgoing.get(gvFrom)) {
+      EdgeNode<E> ge = convert(e);
+      if (ge.to == gvTo) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
   @Override
   public V remove(Vertex<V> v) throws PositionException, RemovalException {
     // TODO Implement me!
     VertexNode<V> gv = convert(v);
-    HashSet<Edge<E>> incidentEdges = incidentList.get(gv);
-    if (!incidentEdges.isEmpty()) {
+    HashSet<Edge<E>> outgoingEdges = outgoing.get(gv);
+    HashSet<Edge<E>> incomingEdges = incoming.get(gv);
+    
+    if (!outgoingEdges.isEmpty() || !incomingEdges.isEmpty()) {
       throw new RemovalException();
     }
-    incidentList.remove(gv);
+    
+    outgoing.remove(gv);
+    incoming.remove(gv);
+    allVertices.remove(gv);
     return gv.data;
   }
 
@@ -90,77 +135,92 @@ public class SparseGraph<V, E> implements Graph<V, E> {
     // TODO Implement me!
     EdgeNode<E> ge = convert(e);
     VertexNode<V> from = ge.from;
-    incidentList.get(from).remove(ge);
+    outgoing.get(from).remove(ge);
     VertexNode<V> to = ge.to;
-    incidentList.get(to).remove(ge);
+    incoming.get(to).remove(ge);
+    allEdges.remove(ge);
     return ge.data;
   }
 
   @Override
   public Iterable<Vertex<V>> vertices() {
     // TODO Implement me!
-    return incidentList.keySet();
+    return allVertices;
   }
 
   @Override
   public Iterable<Edge<E>> edges() {
     // TODO Implement me!
-    ArrayList<Edge<E>> edges = new ArrayList<>();
-    for (Vertex<V> vertex : vertices()) {
-      edges.addAll(incidentList.get(vertex));
-    }
-    return edges;
+    return allEdges;
   }
 
   @Override
   public Iterable<Edge<E>> outgoing(Vertex<V> v) throws PositionException {
     // TODO Implement me!
-    return null;
+    return outgoing.get(v);
   }
 
   @Override
   public Iterable<Edge<E>> incoming(Vertex<V> v) throws PositionException {
     // TODO Implement me!
-    return null;
+    return incoming.get(v);
   }
 
   @Override
   public Vertex<V> from(Edge<E> e) throws PositionException {
     // TODO Implement me!
-    return null;
+    EdgeNode<E> ge = convert(e);
+    return ge.from;
   }
 
   @Override
   public Vertex<V> to(Edge<E> e) throws PositionException {
     // TODO Implement me!
-    return null;
+    EdgeNode<E> ge = convert(e);
+    return ge.to;
   }
 
   @Override
   public void label(Vertex<V> v, Object l) throws PositionException {
     // TODO Implement me!
+    VertexNode gv = convert(v);
+    gv.label = l;
   }
 
   @Override
   public void label(Edge<E> e, Object l) throws PositionException {
     // TODO Implement me!
+    EdgeNode ge = convert(e);
+    ge.label = l;
   }
 
   @Override
   public Object label(Vertex<V> v) throws PositionException {
     // TODO Implement me!
-    return null;
+    VertexNode gv = convert(v);
+    return gv.label;
   }
 
   @Override
   public Object label(Edge<E> e) throws PositionException {
     // TODO Implement me!
-    return null;
+    EdgeNode ge = convert(e);
+    return ge.label;
   }
 
   @Override
   public void clearLabels() {
     // TODO Implement me!
+    for (Vertex<V> v : vertices()) {
+      VertexNode gv = convert(v);
+      gv.label = null;
+    }
+  
+    for (Edge<E> e : edges()) {
+      EdgeNode ge = convert(e);
+      ge.label = null;
+    }
+    
   }
 
   @Override
@@ -208,5 +268,7 @@ public class SparseGraph<V, E> implements Graph<V, E> {
     public E get() {
       return this.data;
     }
+    
+    
   }
 }
