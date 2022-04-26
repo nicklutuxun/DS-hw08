@@ -3,6 +3,10 @@ package hw8.graph;
 import exceptions.InsertionException;
 import exceptions.PositionException;
 import exceptions.RemovalException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
 /**
  * An implementation of Graph ADT using incidence lists
@@ -14,6 +18,7 @@ import exceptions.RemovalException;
 public class SparseGraph<V, E> implements Graph<V, E> {
 
   // TODO You may need to add fields/constructor here!
+  HashMap<Vertex<V>, HashSet<Edge<E>>> incidentList = new HashMap<>();
 
   // Converts the vertex back to a VertexNode to use internally
   private VertexNode<V> convert(Vertex<V> v) throws PositionException {
@@ -44,38 +49,67 @@ public class SparseGraph<V, E> implements Graph<V, E> {
   @Override
   public Vertex<V> insert(V v) throws InsertionException {
     // TODO Implement me!
-    return null;
+    VertexNode<V> newVertexNode = new VertexNode(v);
+    newVertexNode.owner = this;
+    if (incidentList.containsKey(newVertexNode)) {
+      throw new InsertionException();
+    }
+    HashSet<Edge<E>> incidentEdges = new HashSet<>();
+    incidentList.put(newVertexNode, incidentEdges);
+    return newVertexNode;
   }
 
   @Override
   public Edge<E> insert(Vertex<V> from, Vertex<V> to, E e)
       throws PositionException, InsertionException {
     // TODO Implement me!
-    return null;
+    if (from == null || to == null) {
+      throw new PositionException();
+    }
+    VertexNode<V> gvFrom = convert(from);
+    VertexNode<V> gvTo = convert(to);
+    EdgeNode<E> newEdgeNode = new EdgeNode(gvFrom, gvTo, e);
+    incidentList.get(gvFrom).add(newEdgeNode);
+    return newEdgeNode;
   }
 
   @Override
   public V remove(Vertex<V> v) throws PositionException, RemovalException {
     // TODO Implement me!
-    return null;
+    VertexNode<V> gv = convert(v);
+    HashSet<Edge<E>> incidentEdges = incidentList.get(gv);
+    if (!incidentEdges.isEmpty()) {
+      throw new RemovalException();
+    }
+    incidentList.remove(gv);
+    return gv.data;
   }
 
   @Override
   public E remove(Edge<E> e) throws PositionException {
     // TODO Implement me!
-    return null;
+    EdgeNode<E> ge = convert(e);
+    VertexNode<V> from = ge.from;
+    incidentList.get(from).remove(ge);
+    VertexNode<V> to = ge.to;
+    incidentList.get(to).remove(ge);
+    return ge.data;
   }
 
   @Override
   public Iterable<Vertex<V>> vertices() {
     // TODO Implement me!
-    return null;
+    return incidentList.keySet();
   }
 
   @Override
   public Iterable<Edge<E>> edges() {
     // TODO Implement me!
-    return null;
+    ArrayList<Edge<E>> edges = new ArrayList<>();
+    for (Vertex<V> vertex : vertices()) {
+      edges.addAll(incidentList.get(vertex));
+    }
+    return edges;
   }
 
   @Override
