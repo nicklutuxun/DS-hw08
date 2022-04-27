@@ -50,6 +50,10 @@ public class SparseGraph<V, E> implements Graph<V, E> {
   @Override
   public Vertex<V> insert(V v) throws InsertionException {
     // TODO Implement me!
+    if (v == null) {
+      throw new InsertionException();
+    }
+    
     VertexNode<V> newVertexNode = new VertexNode(v);
     
     if (hasDuplicateVertex(v)) {
@@ -76,6 +80,11 @@ public class SparseGraph<V, E> implements Graph<V, E> {
     // check self-loop
     if (from == to) {
       throw new InsertionException();
+    }
+    
+    // not in graph
+    if (!allVertices.contains(from) || !allVertices.contains(to)) {
+      throw new PositionException();
     }
     
     VertexNode<V> gvFrom = convert(from);
@@ -268,7 +277,6 @@ public class SparseGraph<V, E> implements Graph<V, E> {
     public E get() {
       return this.data;
     }
-    
     
   }
 }
