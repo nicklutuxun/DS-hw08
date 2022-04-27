@@ -3,8 +3,11 @@ package hw8.graph;
 import exceptions.InsertionException;
 import exceptions.PositionException;
 import exceptions.RemovalException;
+
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * An implementation of Graph ADT using incidence lists
@@ -125,6 +128,13 @@ public class SparseGraph<V, E> implements Graph<V, E> {
   @Override
   public V remove(Vertex<V> v) throws PositionException, RemovalException {
     // TODO Implement me!
+    if (v == null) {
+      throw new PositionException();
+    }
+  
+    if (!allVertices.contains(v)) {
+      throw new PositionException();
+    }
     VertexNode<V> gv = convert(v);
     HashSet<Edge<E>> outgoingEdges = outgoing.get(gv);
     HashSet<Edge<E>> incomingEdges = incoming.get(gv);
@@ -142,6 +152,10 @@ public class SparseGraph<V, E> implements Graph<V, E> {
   @Override
   public E remove(Edge<E> e) throws PositionException {
     // TODO Implement me!
+    if (!allEdges.contains(e)) {
+      throw new PositionException();
+    }
+    
     EdgeNode<E> ge = convert(e);
     VertexNode<V> from = ge.from;
     outgoing.get(from).remove(ge);
@@ -154,30 +168,39 @@ public class SparseGraph<V, E> implements Graph<V, E> {
   @Override
   public Iterable<Vertex<V>> vertices() {
     // TODO Implement me!
-    return allVertices;
+    return Collections.unmodifiableSet(allVertices);
   }
 
   @Override
   public Iterable<Edge<E>> edges() {
     // TODO Implement me!
-    return allEdges;
+    return Collections.unmodifiableSet(allEdges);
   }
 
   @Override
   public Iterable<Edge<E>> outgoing(Vertex<V> v) throws PositionException {
     // TODO Implement me!
+    if (!allVertices.contains(v)) {
+      throw new PositionException();
+    }
     return outgoing.get(v);
   }
 
   @Override
   public Iterable<Edge<E>> incoming(Vertex<V> v) throws PositionException {
     // TODO Implement me!
+    if (!allVertices.contains(v)) {
+      throw new PositionException();
+    }
     return incoming.get(v);
   }
 
   @Override
   public Vertex<V> from(Edge<E> e) throws PositionException {
     // TODO Implement me!
+    if (!allEdges.contains(e)) {
+      throw new PositionException();
+    }
     EdgeNode<E> ge = convert(e);
     return ge.from;
   }
@@ -185,6 +208,9 @@ public class SparseGraph<V, E> implements Graph<V, E> {
   @Override
   public Vertex<V> to(Edge<E> e) throws PositionException {
     // TODO Implement me!
+    if (!allEdges.contains(e)) {
+      throw new PositionException();
+    }
     EdgeNode<E> ge = convert(e);
     return ge.to;
   }
