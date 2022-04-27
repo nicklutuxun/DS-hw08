@@ -45,7 +45,33 @@ public abstract class GraphTest {
     }
   }
   
-
+  @Test
+  @DisplayName("insert duplicate edges throws exception")
+  public void insertDuplicateEdgesThrowsInsertionException () {
+    try {
+      Vertex<String> v1 = graph.insert("v1");
+      Vertex<String> v2 = graph.insert("v2");
+      graph.insert(v1, v2, "v1-v2");
+      graph.insert(v1, v2, "v1-v2");
+      fail("The expected exception was not thrown");
+    } catch (InsertionException ex) {
+      return;
+    }
+  }
+  
+  @Test
+  @DisplayName("insert edges that result in self-loop throws exception")
+  public void insertEdgesSelfLoopThrowsInsertionException () {
+    try {
+      Vertex<String> v1 = graph.insert("v1");
+      Vertex<String> v2 = graph.insert("v2");
+      graph.insert(v1, v1, "v1-v1");
+      fail("The expected exception was not thrown");
+    } catch (InsertionException ex) {
+      return;
+    }
+  }
+  
   @Test
   @DisplayName("insert(U, V, e) returns an edge with given data")
   public void canGetEdgeAfterInsert() {
@@ -57,7 +83,7 @@ public abstract class GraphTest {
 
   @Test
   @DisplayName("insert(null, V, e) throws exception")
-  public void insertEdgeThrowsPositionExceptionWhenfirstVertexIsNull() {
+  public void insertEdgeThrowsPositionExceptionWhenFirstVertexIsNull() {
     try {
       Vertex<String> v = graph.insert("v");
       graph.insert(null, v, "e");
