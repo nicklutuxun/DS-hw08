@@ -3,11 +3,9 @@ package hw8.graph;
 import exceptions.InsertionException;
 import exceptions.PositionException;
 import exceptions.RemovalException;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
 
 /**
  * An implementation of Graph ADT using incidence lists
@@ -76,18 +74,15 @@ public class SparseGraph<V, E> implements Graph<V, E> {
   public Edge<E> insert(Vertex<V> from, Vertex<V> to, E e)
       throws PositionException, InsertionException {
     // TODO Implement me!
-    if (from == null || to == null) {
+    
+    // not in graph or null
+    if (from == null || to == null || !allVertices.contains(from) || !allVertices.contains(to)) {
       throw new PositionException();
     }
-  
+
     // check self-loop
     if (from == to) {
       throw new InsertionException();
-    }
-    
-    // not in graph
-    if (!allVertices.contains(from) || !allVertices.contains(to)) {
-      throw new PositionException();
     }
     
     VertexNode<V> gvFrom = convert(from);
