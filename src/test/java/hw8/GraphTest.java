@@ -12,8 +12,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class GraphTest {
 
@@ -80,6 +81,23 @@ public abstract class GraphTest {
     Edge<String> e1 = graph.insert(v1, v2, "v1-v2");
     assertEquals(e1.get(), "v1-v2");
   }
+  
+  @Test
+  @DisplayName("insert(U, V, e) returns an edge with given data")
+  public void getEndpointsOfAnEdgeFromADifferentGraph() {
+    Graph<String, String> graph2 = createGraph();
+    Vertex<String> v1 = graph.insert("v1");
+    Vertex<String> v2 = graph2.insert("v2");
+    Vertex<String> v3 = graph2.insert("v3");
+    Edge<String> e1 = graph2.insert(v2, v3, "v1-v2");
+    try {
+      graph.from(e1);
+      graph.to(e1);
+      fail("The expected exception was not thrown");
+    } catch (PositionException ex) {
+      return;
+    }
+  }
 
   @Test
   @DisplayName("insert(null, V, e) throws exception")
@@ -137,6 +155,25 @@ public abstract class GraphTest {
   }
   
   @Test
+  @DisplayName("vertices() throws exception when try to modify content")
+  public void verticesThrowsExceptionWhenTryToModifyContent() {
+    Vertex<String> v1 = graph.insert("v1");
+    Vertex<String> v2 = graph.insert("v2");
+    Vertex<String> v3 = graph.insert("v3");
+    Edge<String> e1 = graph.insert(v1, v2, "v1-v2");
+    Edge<String> e2 = graph.insert(v2, v3, "v2-v3");
+    Edge<String> e3 = graph.insert(v3, v1, "v3-v1");
+    Set<Vertex<String>> vertices = (Set<Vertex<String>>) graph.vertices();
+    try {
+      vertices.remove(v1);
+      fail("The expected exception was not thrown");
+    } catch (UnsupportedOperationException ex) {
+      return;
+    }
+  }
+  
+  
+  @Test
   @DisplayName("edges() correctly returns an iterable of all edges")
   public void EdgesCorrectlyReturnsAnIterableOfEdges() {
     Vertex<String> v1 = graph.insert("v1");
@@ -151,6 +188,24 @@ public abstract class GraphTest {
       counter++;
     }
     assertEquals(counter, 3);
+  }
+  
+  @Test
+  @DisplayName("edge() throws exception when try to modify content")
+  public void edgesThrowsExceptionWhenTryToModifyContent() {
+    Vertex<String> v1 = graph.insert("v1");
+    Vertex<String> v2 = graph.insert("v2");
+    Vertex<String> v3 = graph.insert("v3");
+    Edge<String> e1 = graph.insert(v1, v2, "v1-v2");
+    Edge<String> e2 = graph.insert(v2, v3, "v2-v3");
+    Edge<String> e3 = graph.insert(v3, v1, "v3-v1");
+    Set<Edge<String>> edges = (Set<Edge<String>>) graph.edges();
+    try {
+      edges.remove(e1);
+      fail("The expected exception was not thrown");
+    } catch (UnsupportedOperationException ex) {
+      return;
+    }
   }
   
   @Test
@@ -185,5 +240,42 @@ public abstract class GraphTest {
       counter++;
     }
     assertEquals(counter, 1);
+  }
+  
+  @Test
+  @DisplayName("clearLabels() correctly clear all labels")
+  public void clearLabelsCorrectlyBehaves() {
+    Vertex<String> v1 = graph.insert("v1");
+    graph.label(v1, "1");
+    Vertex<String> v2 = graph.insert("v2");
+    graph.label(v2, "2");
+    Vertex<String> v3 = graph.insert("v3");
+    graph.label(v3, "3");
+    Edge<String> e1 = graph.insert(v1, v2, "v1-v2");
+    graph.label(e1, "1");
+    Edge<String> e2 = graph.insert(v2, v3, "v2-v3");
+    graph.label(e2, "2");
+    Edge<String> e3 = graph.insert(v3, v1, "v3-v1");
+    graph.label(e3, "3");
+    
+    graph.clearLabels();
+    for (Vertex<String> v : graph.vertices()) {
+      assertNull(graph.label(v));
+    }
+    for (Edge<String> e : graph.edges()) {
+      assertNull(graph.label(e));
+    }
+  }
+  
+  @Test
+  @DisplayName("check graphviz")
+  public void checkGraphviz() {
+    Vertex<String> v1 = graph.insert("v1");
+    Vertex<String> v2 = graph.insert("v2");
+    Vertex<String> v3 = graph.insert("v3");
+    Edge<String> e1 = graph.insert(v1, v2, "v1-v2");
+    Edge<String> e2 = graph.insert(v2, v3, "v2-v3");
+    Edge<String> e3 = graph.insert(v3, v1, "v3-v1");
+    System.out.println(graph);
   }
 }
