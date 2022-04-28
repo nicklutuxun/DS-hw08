@@ -15,13 +15,12 @@ import java.util.HashSet;
  * @param <E> Edge element type.
  */
 public class SparseGraph<V, E> implements Graph<V, E> {
-
   // TODO You may need to add fields/constructor here!
   HashMap<Vertex<V>, HashSet<Edge<E>>> incoming = new HashMap<>();
   HashMap<Vertex<V>, HashSet<Edge<E>>> outgoing = new HashMap<>();
   HashSet<Vertex<V>> allVertices = new HashSet<>();
   HashSet<Edge<E>> allEdges = new HashSet<>();
-
+  
   // Converts the vertex back to a VertexNode to use internally
   private VertexNode<V> convert(Vertex<V> v) throws PositionException {
     try {
@@ -34,7 +33,7 @@ public class SparseGraph<V, E> implements Graph<V, E> {
       throw new PositionException();
     }
   }
-
+  
   // Converts and edge back to a EdgeNode to use internally
   private EdgeNode<E> convert(Edge<E> e) throws PositionException {
     try {
@@ -47,7 +46,7 @@ public class SparseGraph<V, E> implements Graph<V, E> {
       throw new PositionException();
     }
   }
-
+  
   @Override
   public Vertex<V> insert(V v) throws InsertionException {
     // TODO Implement me!
@@ -55,12 +54,12 @@ public class SparseGraph<V, E> implements Graph<V, E> {
       throw new InsertionException();
     }
     
-    VertexNode<V> newVertexNode = new VertexNode(v);
+    VertexNode<V> newVertexNode = new VertexNode<>(v);
     
     if (hasDuplicateVertex(v)) {
       throw new InsertionException();
     }
-  
+    
     newVertexNode.owner = this;
     HashSet<Edge<E>> incomingEdges = new HashSet<>();
     HashSet<Edge<E>> outgoingEdges = new HashSet<>();
@@ -79,7 +78,7 @@ public class SparseGraph<V, E> implements Graph<V, E> {
     if (from == null || to == null || !allVertices.contains(from) || !allVertices.contains(to)) {
       throw new PositionException();
     }
-
+    
     // check self-loop
     if (from == to) {
       throw new InsertionException();
@@ -92,7 +91,7 @@ public class SparseGraph<V, E> implements Graph<V, E> {
       throw new InsertionException();
     }
     
-    EdgeNode<E> newEdgeNode = new EdgeNode(gvFrom, gvTo, e);
+    EdgeNode<E> newEdgeNode = new EdgeNode<>(gvFrom, gvTo, e);
     newEdgeNode.owner = this;
     outgoing.get(gvFrom).add(newEdgeNode);
     incoming.get(gvTo).add(newEdgeNode);
@@ -126,7 +125,7 @@ public class SparseGraph<V, E> implements Graph<V, E> {
     if (v == null) {
       throw new PositionException();
     }
-  
+    
     if (!allVertices.contains(v)) {
       throw new PositionException();
     }
@@ -143,7 +142,7 @@ public class SparseGraph<V, E> implements Graph<V, E> {
     allVertices.remove(gv);
     return gv.data;
   }
-
+  
   @Override
   public E remove(Edge<E> e) throws PositionException {
     // TODO Implement me!
@@ -159,19 +158,19 @@ public class SparseGraph<V, E> implements Graph<V, E> {
     allEdges.remove(ge);
     return ge.data;
   }
-
+  
   @Override
   public Iterable<Vertex<V>> vertices() {
     // TODO Implement me!
     return Collections.unmodifiableSet(allVertices);
   }
-
+  
   @Override
   public Iterable<Edge<E>> edges() {
     // TODO Implement me!
     return Collections.unmodifiableSet(allEdges);
   }
-
+  
   @Override
   public Iterable<Edge<E>> outgoing(Vertex<V> v) throws PositionException {
     // TODO Implement me!
@@ -180,7 +179,7 @@ public class SparseGraph<V, E> implements Graph<V, E> {
     }
     return outgoing.get(v);
   }
-
+  
   @Override
   public Iterable<Edge<E>> incoming(Vertex<V> v) throws PositionException {
     // TODO Implement me!
@@ -189,7 +188,7 @@ public class SparseGraph<V, E> implements Graph<V, E> {
     }
     return incoming.get(v);
   }
-
+  
   @Override
   public Vertex<V> from(Edge<E> e) throws PositionException {
     // TODO Implement me!
@@ -199,7 +198,7 @@ public class SparseGraph<V, E> implements Graph<V, E> {
     EdgeNode<E> ge = convert(e);
     return ge.from;
   }
-
+  
   @Override
   public Vertex<V> to(Edge<E> e) throws PositionException {
     // TODO Implement me!
@@ -209,74 +208,74 @@ public class SparseGraph<V, E> implements Graph<V, E> {
     EdgeNode<E> ge = convert(e);
     return ge.to;
   }
-
+  
   @Override
   public void label(Vertex<V> v, Object l) throws PositionException {
     // TODO Implement me!
-    VertexNode gv = convert(v);
+    VertexNode<V> gv = convert(v);
     gv.label = l;
   }
-
+  
   @Override
   public void label(Edge<E> e, Object l) throws PositionException {
     // TODO Implement me!
-    EdgeNode ge = convert(e);
+    EdgeNode<E> ge = convert(e);
     ge.label = l;
   }
-
+  
   @Override
   public Object label(Vertex<V> v) throws PositionException {
     // TODO Implement me!
-    VertexNode gv = convert(v);
+    VertexNode<V> gv = convert(v);
     return gv.label;
   }
-
+  
   @Override
   public Object label(Edge<E> e) throws PositionException {
     // TODO Implement me!
-    EdgeNode ge = convert(e);
+    EdgeNode<E> ge = convert(e);
     return ge.label;
   }
-
+  
   @Override
   public void clearLabels() {
     // TODO Implement me!
     for (Vertex<V> v : vertices()) {
-      VertexNode gv = convert(v);
+      VertexNode<V> gv = convert(v);
       gv.label = null;
     }
-  
+    
     for (Edge<E> e : edges()) {
-      EdgeNode ge = convert(e);
+      EdgeNode<E> ge = convert(e);
       ge.label = null;
     }
     
   }
-
+  
   @Override
   public String toString() {
     GraphPrinter<V, E> gp = new GraphPrinter<>(this);
     return gp.toString();
   }
-
+  
   // Class for a vertex of type V
   private final class VertexNode<V> implements Vertex<V> {
     V data;
     Graph<V, E> owner;
     Object label;
     // TODO You may need to add fields/methods here!
-
+    
     VertexNode(V v) {
       this.data = v;
       this.label = null;
     }
-
+    
     @Override
     public V get() {
       return this.data;
     }
   }
-
+  
   //Class for an edge of type E
   private final class EdgeNode<E> implements Edge<E> {
     E data;
@@ -285,7 +284,7 @@ public class SparseGraph<V, E> implements Graph<V, E> {
     VertexNode<V> to;
     Object label;
     // TODO You may need to add fields/methods here!
-
+    
     // Constructor for a new edge
     EdgeNode(VertexNode<V> f, VertexNode<V> t, E e) {
       this.from = f;
@@ -293,11 +292,10 @@ public class SparseGraph<V, E> implements Graph<V, E> {
       this.data = e;
       this.label = null;
     }
-
+    
     @Override
     public E get() {
       return this.data;
     }
-    
   }
 }
