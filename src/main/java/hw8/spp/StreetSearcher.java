@@ -29,7 +29,7 @@ public abstract class StreetSearcher {
   public static boolean VERBOSE = true;
 
   // useful for marking distance to nodes, or use Double.POSITIVE_INFINITY
-  protected static final double MAX_DISTANCE = 1e18;
+  protected static final double MAX_DISTANCE = Double.POSITIVE_INFINITY;
 
   /* We use a HashMap to store all the vertices so we can
    * find them by name (i.e. their coordinates) when inserting
