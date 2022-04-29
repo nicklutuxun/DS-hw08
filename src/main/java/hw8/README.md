@@ -43,24 +43,24 @@ Total Distance: 8818.5187
 ```
 ~~~ SystemRuntimeTest ~~~
 Config: baltimore.streets.txt from -76.6175,39.3296 to -76.6383,39.3206
-Loading network took 760 milliseconds.
-Finding shortest path took 103 milliseconds.
+Loading network took 714 milliseconds.
+Finding shortest path took 48 milliseconds.
 ~~~~~~     END     ~~~~~~
 ```
 ```
 /Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home/bin/java -javaagent:/Users/nicklu/Library/Application Support/JetBrains/Toolbox/apps/IDEA-U/ch-0/221.5080.210/IntelliJ IDEA.app/Contents/lib/idea_rt.jar=59291:/Users/nicklu/Library/Application Support/JetBrains/Toolbox/apps/IDEA-U/ch-0/221.5080.210/IntelliJ IDEA.app/Contents/bin -Dfile.encoding=UTF-8 -classpath /Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home/jre/lib/charsets.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home/jre/lib/deploy.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home/jre/lib/ext/cldrdata.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home/jre/lib/ext/dnsns.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home/jre/lib/ext/jaccess.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home/jre/lib/ext/jfxrt.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home/jre/lib/ext/localedata.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home/jre/lib/ext/nashorn.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home/jre/lib/ext/sunec.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home/jre/lib/ext/sunjce_provider.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home/jre/lib/ext/sunpkcs11.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home/jre/lib/ext/zipfs.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home/jre/lib/javaws.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home/jre/lib/jce.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home/jre/lib/jfr.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home/jre/lib/jfxswt.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home/jre/lib/jsse.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home/jre/lib/management-agent.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home/jre/lib/plugin.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home/jre/lib/resources.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home/jre/lib/rt.jar:/Users/nicklu/Documents/Git/DS/Hw/DS-hw08/out/test/hw8:/Users/nicklu/Documents/Git/DS/Hw/DS-hw08/out/production/hw8:/Users/nicklu/Documents/Git/DS/Hw/DS-hw08/lib/jmh-core-1.27.jar:/Users/nicklu/Documents/Git/DS/Hw/DS-hw08/lib/opentest4j-1.1.1.jar:/Users/nicklu/Documents/Git/DS/Hw/DS-hw08/lib/commons-math3-3.6.1.jar:/Users/nicklu/Documents/Git/DS/Hw/DS-hw08/lib/junit-jupiter-5.4.2.jar:/Users/nicklu/Documents/Git/DS/Hw/DS-hw08/lib/apiguardian-api-1.0.0.jar:/Users/nicklu/Documents/Git/DS/Hw/DS-hw08/lib/jopt-simple-6.0-alpha-3.jar:/Users/nicklu/Documents/Git/DS/Hw/DS-hw08/lib/junit-jupiter-api-5.4.2.jar:/Users/nicklu/Documents/Git/DS/Hw/DS-hw08/lib/junit-jupiter-engine-5.4.2.jar:/Users/nicklu/Documents/Git/DS/Hw/DS-hw08/lib/junit-jupiter-params-5.4.2.jar:/Users/nicklu/Documents/Git/DS/Hw/DS-hw08/lib/junit-platform-engine-1.4.2.jar:/Users/nicklu/Documents/Git/DS/Hw/DS-hw08/lib/junit-platform-commons-1.4.2.jar:/Users/nicklu/Documents/Git/DS/Hw/DS-hw08/lib/jmh-generator-annprocess-1.27.jar performance.MemoryMonitorTest
 ~~~ MemoryMonitorTest ~~~
 Config: baltimore.streets.txt from -76.6175,39.3296 to -76.6383,39.3206
-	Used memory: 6694.93 KB (Δ = 0.000)
+	Used memory: 6734.08 KB (Δ = 0.000)
 Instantiating empty Graph data structure
 Instantiating empty StreetSearcher object
-	Used memory: 6829.84 KB (Δ = 134.906)
+	Used memory: 6877.13 KB (Δ = 143.055)
 Loading the network
-	Used memory: 19387.63 KB (Δ = 12557.797)
+	Used memory: 19385.61 KB (Δ = 12508.477)
 Finding the shortest path
-	Used memory: 20123.92 KB (Δ = 736.289)
+	Used memory: 20083.34 KB (Δ = 697.727)
 Setting objects to null (so GC does its thing!)
-	Used memory: 10065.91 KB (Δ = -10058.008)
+	Used memory: 8714.24 KB (Δ = -11369.094)
 ~~~~~~     END     ~~~~~~
 ```
 
@@ -92,24 +92,24 @@ Total Distance: 5827.3652
 ```
 ~~~ SystemRuntimeTest ~~~
 Config: baltimore.streets.txt from -76.6214,39.3212 to -76.6383,39.3206
-Loading network took 768 milliseconds.
-Finding shortest path took 103 milliseconds.
+Loading network took 785 milliseconds.
+Finding shortest path took 43 milliseconds.
 ~~~~~~     END     ~~~~~~
 ```
 
 ```
 ~~~ MemoryMonitorTest ~~~
 Config: baltimore.streets.txt from -76.6214,39.3212 to -76.6383,39.3206
-	Used memory: 6725.81 KB (Δ = 0.000)
+	Used memory: 6696.38 KB (Δ = 0.000)
 Instantiating empty Graph data structure
 Instantiating empty StreetSearcher object
-	Used memory: 8191.58 KB (Δ = 1465.766)
+	Used memory: 6841.47 KB (Δ = 145.086)
 Loading the network
-	Used memory: 19408.41 KB (Δ = 11216.836)
+	Used memory: 19360.09 KB (Δ = 12518.625)
 Finding the shortest path
-	Used memory: 21460.79 KB (Δ = 2052.375)
+	Used memory: 21368.73 KB (Δ = 2008.633)
 Setting objects to null (so GC does its thing!)
-	Used memory: 8781.10 KB (Δ = -12679.688)
+	Used memory: 8689.60 KB (Δ = -12679.125)
 ~~~~~~     END     ~~~~~~
 ```
 
@@ -197,23 +197,23 @@ Total Distance: 16570.4909
 ```
 ~~~ SystemRuntimeTest ~~~
 Config: baltimore.streets.txt from -76.6107,39.2866 to -76.6175,39.3296
-Loading network took 725 milliseconds.
-Finding shortest path took 107 milliseconds.
+Loading network took 704 milliseconds.
+Finding shortest path took 98 milliseconds.
 ~~~~~~     END     ~~~~~~
 ```
 
 ```
 ~~~ MemoryMonitorTest ~~~
 Config: baltimore.streets.txt from -76.6107,39.2866 to -76.6175,39.3296
-	Used memory: 6693.32 KB (Δ = 0.000)
+	Used memory: 6740.73 KB (Δ = 0.000)
 Instantiating empty Graph data structure
 Instantiating empty StreetSearcher object
-	Used memory: 8143.63 KB (Δ = 1450.313)
+	Used memory: 6878.38 KB (Δ = 137.648)
 Loading the network
-	Used memory: 19368.32 KB (Δ = 11224.688)
+	Used memory: 19378.55 KB (Δ = 12500.172)
 Finding the shortest path
-	Used memory: 20108.41 KB (Δ = 740.094)
+	Used memory: 20123.36 KB (Δ = 744.813)
 Setting objects to null (so GC does its thing!)
-	Used memory: 8739.32 KB (Δ = -11369.094)
+	Used memory: 8754.27 KB (Δ = -11369.094)
 ~~~~~~     END     ~~~~~~
 ```
