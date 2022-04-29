@@ -10,7 +10,7 @@ import java.util.PriorityQueue;
 
 public class DijkstraStreetSearcher extends StreetSearcher {
   
-  private HashMap<Vertex<String>, Double> dist = new HashMap<>();
+  private final HashMap<Vertex<String>, Double> dist = new HashMap<>();
   
   /**
    * Creates a StreetSearcher object.
@@ -23,7 +23,6 @@ public class DijkstraStreetSearcher extends StreetSearcher {
   
   @Override
   public void findShortestPath(String startName, String endName) {
-    Vertex<String> start = vertices.get(startName);
     // whether vertex is explored
     HashMap<Vertex<String>, Boolean> explore = new HashMap<>();
     // head is always a vertex with the shortest distance from start to it
@@ -35,14 +34,16 @@ public class DijkstraStreetSearcher extends StreetSearcher {
       dist.put(v, MAX_DISTANCE);
       explore.put(v, false);
     }
+    
+    Vertex<String> start = vertices.get(startName);
+    Vertex<String> end = vertices.get(endName);
     pq.add(start);
     dist.replace(start, 0.0);
     
     // run dijkstra
-    dijkstra(pq, explore);
-  
+    dijkstra(pq, explore, end);
+    
     // trace back from end
-    Vertex<String> end = vertices.get(endName);
     double totalDist = dist.get(end);
     // These method calls will create and print the path for you
     List<Edge<String>> path = getPath(end, start);
@@ -51,8 +52,10 @@ public class DijkstraStreetSearcher extends StreetSearcher {
     }
   }
   
-  private void dijkstra(PriorityQueue<Vertex<String>> pq, HashMap<Vertex<String>, Boolean> explore) {
-    while (!pq.isEmpty()) {
+  private void dijkstra(PriorityQueue<Vertex<String>> pq, HashMap<Vertex<String>,
+      Boolean> explore, Vertex<String> end) {
+    // continue when pq is not empty and stop when end is found
+    while (!pq.isEmpty() && !explore.get(end)) {
       Vertex<String> v = pq.remove();
       explore.replace(v, true);
       for (Edge<String> e : graph.outgoing(v)) {
@@ -82,7 +85,7 @@ public class DijkstraStreetSearcher extends StreetSearcher {
   }
   
   protected class VertexComparator implements Comparator<Vertex<String>> {
-  
+    
     @Override
     public int compare(Vertex<String> v1, Vertex<String> v2) {
       return Integer.compare(dist.get(v1).compareTo(dist.get(v2)), 0);
