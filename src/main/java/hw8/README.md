@@ -217,3 +217,22 @@ Setting objects to null (so GC does its thing!)
 	Used memory: 8754.27 KB (Δ = -11369.094)
 ~~~~~~     END     ~~~~~~
 ```
+
+## Benchmark 
+
+```
+Benchmark                                                                   (endPointKey)  Mode  Cnt           Score          Error   Units
+JmhRuntimeTest.findShortestPath:+c2k.gc.maximumUsedAfterGc              JHU to Druid Lake  avgt   20    84239474.400 ± 10682886.639   bytes
+JmhRuntimeTest.findShortestPath:+c2k.gc.maximumUsedAfterGc             7-11 to Druid Lake  avgt   20    86063588.800 ±  5914074.979   bytes
+JmhRuntimeTest.findShortestPath:+c2k.gc.maximumUsedAfterGc            Inner Harbor to JHU  avgt   20    72355810.400 ±   655855.746   bytes
+
+JmhRuntimeTest.findShortestPath:+c2k.gc.time                            JHU to Druid Lake  avgt   20          20.800 ±       15.309      ms
+JmhRuntimeTest.findShortestPath:+c2k.gc.time                           7-11 to Druid Lake  avgt   20          33.550 ±       23.872      ms
+JmhRuntimeTest.findShortestPath:+c2k.gc.time                          Inner Harbor to JHU  avgt   20          18.650 ±       11.323      ms
+```
+To skip unnecessary steps, I stop the Dijkstra's algorithm as soon as the end vertex is marked as "explored". This is because Dijkstra's algorithm
+ensures that once a vertex is marked "found", its predecessor chain is guaranteed the shortest path.
+
+In the benchmark, it seems space and time used are positively, but not linearly correlated, which is reasonable. There is a fixed amount of space 
+to store the information of the map. But depending on start and end coordinate, some pairs may end early because they take fewer iterations in the algorithm,
+thus the space of PriorityQueue are different among the pairs.
